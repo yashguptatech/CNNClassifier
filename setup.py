@@ -5,9 +5,9 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 __version__ = "0.0.1"
 
-REPONAME = "CNN-Classifier"
+REPONAME = "CNNClassifier"
 AUTHOR_USER_NAME = "yashguptatech"
-SRC_REPO = "CNN-Classifier"
+SRC_REPO = "CNNClassifier"
 AUTHOR_EMAIL = "yashgupta.tech@gmail.com"
 
 setuptools.setup(
