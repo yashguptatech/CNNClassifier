@@ -1,5 +1,5 @@
-from CNNClassifier.components import DataIngestion
 from CNNClassifier.config import ConfigurationManager
+from CNNClassifier.components import DataIngestion
 from CNNClassifier import logger
 
 class DataIngestionTrainingPipeline:
