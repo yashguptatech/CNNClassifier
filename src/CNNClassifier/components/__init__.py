@@ -1,3 +1,4 @@
 from CNNClassifier.components.data_ingestion import DataIngestion
 from CNNClassifier.components.prepare_base_model import PrepareBaseModel
 from CNNClassifier.components.prepare_callback import PrepareCallback
+from CNNClassifier.components.training import Training
