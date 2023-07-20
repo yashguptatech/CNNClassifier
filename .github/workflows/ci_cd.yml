@@ -36,9 +36,6 @@ jobs:
       - name: Test app
         run: curl -sSf http://localhost:8080/
 
-      # Step 6: Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./templates
+      # Step 6: Run main.py (adjust as needed)
+      - name: Run main.py
+        run: python main.py
