@@ -1,18 +1,12 @@
-name: Deploy to GitHub Pages using Docker
+name: CI/CD Pipeline
 
-# Controls when the workflow will run
 on:
-  # Trigger the workflow on push or pull request events but only for the "main" branch
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
-# Define the jobs for the CI/CD pipeline
 jobs:
-  deploy:
+  build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,6 +30,6 @@ jobs:
       - name: Test app
         run: curl -sSf http://localhost:8080/
 
-      # Step 6: Run main.py (adjust as needed)
-      - name: Run main.py
+      # Step 6: Run main.py for the backend server
+      - name: Run backend server
         run: python main.py
