@@ -63,6 +63,7 @@ jobs:
       # For example, if your Flask app generates static files in the 'templates' directory
       - name: Build static files
         run: |
+          python app.py
           # Replace this command with the one that generates static HTML files
           # For example, if you use Flask to render templates into static HTML files
           python generate_static_html.py
