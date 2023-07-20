@@ -1,0 +1,44 @@
+name: Deploy to GitHub Pages using Docker
+
+# Controls when the workflow will run
+on:
+  # Trigger the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Define the jobs for the CI/CD pipeline
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Step 2: Build the Docker image
+      - name: Build Docker image
+        run: docker build -t my-flask-app .
+
+      # Step 3: Run the Docker container
+      - name: Run Docker container
+        run: docker run -d -p 8080:8080 my-flask-app
+
+      # Step 4: Wait for the Flask app to start (adjust wait time if needed)
+      - name: Wait for app to start
+        run: sleep 10
+
+      # Step 5: Test the Flask app by sending a request
+      - name: Test app
+        run: curl -sSf http://localhost:8080/
+
+      # Step 6: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./templates
