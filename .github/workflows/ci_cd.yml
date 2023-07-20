@@ -32,17 +32,18 @@ jobs:
       - name: Install Docker
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker.io
+          sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sudo sh get-docker.sh
+          sudo usermod -aG docker $USER
 
       - name: Build Docker image
         run: |
-          # Replace 'my-flask-app' with your desired image name
           docker build -t my-flask-app .
 
       - name: Run Docker container
         run: |
-          # Replace 'my-flask-app' with your image name and adjust port mapping if needed
-          docker run -d -p 8080:8080 my-flask-app
+          docker run -d -p 8080:8080 --name my-flask-container my-flask-app
 
       - name: Wait for app to start (adjust wait time if needed)
         run: sleep 10
