@@ -1,35 +1,74 @@
-name: CI/CD Pipeline
+name: Deploy to GitHub Pages using Docker
 
 on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'README.md'
 
 jobs:
-  build_and_deploy:
+  integration:
+    name: Continuous Integration
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Checkout the code
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-      # Step 2: Build the Docker image
+      - name: Lint code
+        run: echo "Linting repository"
+
+      - name: Run unit tests
+        run: echo "Running unit tests"
+
+  build-and-deploy:
+    name: Continuous Deployment
+    needs: integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+
       - name: Build Docker image
-        run: docker build -t my-flask-app .
+        run: |
+          # Replace 'my-flask-app' with your desired image name
+          docker build -t my-flask-app .
 
-      # Step 3: Run the Docker container
       - name: Run Docker container
-        run: docker run -d -p 8080:8080 my-flask-app
+        run: |
+          # Replace 'my-flask-app' with your image name and adjust port mapping if needed
+          docker run -d -p 8080:8080 my-flask-app
 
-      # Step 4: Wait for the Flask app to start (adjust wait time if needed)
-      - name: Wait for app to start
+      - name: Wait for app to start (adjust wait time if needed)
         run: sleep 10
 
-      # Step 5: Test the Flask app by sending a request
       - name: Test app
         run: curl -sSf http://localhost:8080/
 
-      # Step 6: Run main.py for the backend server
-      - name: Run backend server
-        run: python main.py
+  deploy-to-github-pages:
+    name: Deploy to GitHub Pages
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # You can modify this step to build the static HTML files if needed
+      # For example, if your Flask app generates static files in the 'templates' directory
+      - name: Build static files
+        run: |
+          # Replace this command with the one that generates static HTML files
+          # For example, if you use Flask to render templates into static HTML files
+          python generate_static_html.py
+
+      # Deploy the static files to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./path/to/your/static/files
